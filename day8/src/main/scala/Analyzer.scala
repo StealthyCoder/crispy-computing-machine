@@ -1,13 +1,8 @@
 import scala.util.control.Breaks.{break, breakable}
 
 class Analyzer(code: List[String]) {
-  private var jmpInstructions: List[Int] = List.empty
-  private var nopInstructions: List[Int] = List.empty
-
-  for (i <- code.indices) {
-    if (code(i).startsWith("jmp")) jmpInstructions :+= i
-    else if (code(i).startsWith("nop")) nopInstructions :+= i
-  }
+  private val jmpInstructions: List[Int] = code.indices.filter(i => code(i).startsWith("jmp")).toList
+  private val nopInstructions: List[Int] = code.indices.filter(i => code(i).startsWith("nop")).toList
 
   def analyze(): Unit = {
     simulate(nopInstructions, "nop", "jmp")
