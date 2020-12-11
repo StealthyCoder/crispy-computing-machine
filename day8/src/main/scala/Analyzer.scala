@@ -10,26 +10,17 @@ class Analyzer(code: List[String]) {
   }
 
   def analyze(): Unit = {
-    breakable {
-      for (instruction <- nopInstructions) {
-        val interpreter = new Interpreter(
-          code.updated(
-            instruction,
-            code(instruction).replace("nop", "jmp")
-          )
-        )
-        interpreter.interpret()
-        if (! interpreter.corrupt ) {
-          println("Accumulator is " + interpreter.accumulator )
-          break
-        }
-      }
+    simulate(nopInstructions, "nop", "jmp")
+    simulate(jmpInstructions, "jmp", "nop")
+  }
 
-      for (instruction <- jmpInstructions) {
+  private def simulate(indices: List[Int], command: String, replacement: String): Unit = {
+    breakable {
+      for ( index <- indices ) {
         val interpreter = new Interpreter(
           code.updated(
-            instruction,
-            code(instruction).replace("jmp", "nop")
+            index,
+            code(index).replace(command, replacement)
           )
         )
         interpreter.interpret()
@@ -39,8 +30,5 @@ class Analyzer(code: List[String]) {
         }
       }
     }
-
-
-
   }
 }
