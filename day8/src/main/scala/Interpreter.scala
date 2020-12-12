@@ -27,7 +27,6 @@ class Interpreter(code: List[String]) {
       val instruction = parse(code(instructionPointer))
       linesRan :+= Tuple2(instructionPointer, instruction)
       opCodes(instruction.op).apply(instruction.arg)
-      if (! instruction.op.equals("jmp")) instructionPointer += 1
     } while ( ! linesRan.exists(i => i._1.equals(instructionPointer)) && instructionPointer < code.size )
   }
 
@@ -35,8 +34,8 @@ class Interpreter(code: List[String]) {
     val splitted = s.split(" ")
     Instruction(splitted.head, splitted.last.toInt)
   }
-  private def noop(i: Int): Unit = {}
-  private def accumulate(i: Int): Unit = { _accumulator += i }
+  private def noop(i: Int): Unit = {instructionPointer += 1}
+  private def accumulate(i: Int): Unit = { _accumulator += i; instructionPointer += 1 }
   private def jump(i: Int): Unit = { instructionPointer += i }
 
   private case class Instruction(op: String, arg: Int)
