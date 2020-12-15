@@ -34,13 +34,13 @@ class Seat(initial: Char, x: Int, y: Int)(implicit val ec: ExecutionContext.para
     var futures : List[Future[Unit]] = List.empty
 
     futures +:= Future { north(layout) }
-    futures +:= Future { north_west(layout) }
-    futures +:= Future { west(layout) }
-    futures +:= Future { south_west(layout) }
-    futures +:= Future { south(layout) }
-    futures +:= Future { south_east(layout) }
-    futures +:= Future { east(layout) }
     futures +:= Future { north_east(layout) }
+    futures +:= Future { east(layout) }
+    futures +:= Future { south_east(layout) }
+    futures +:= Future { south(layout) }
+    futures +:= Future { south_west(layout) }
+    futures +:= Future { west(layout) }
+    futures +:= Future { north_west(layout) }
 
     ConcurrencyUtil.awaitAll(futures)
 
@@ -84,7 +84,7 @@ class Seat(initial: Char, x: Int, y: Int)(implicit val ec: ExecutionContext.para
     }
   }
 
-  private def north_west(layout: Array[Array[Seat]]): Unit = {
+  private def north_east(layout: Array[Array[Seat]]): Unit = {
     breakable {
       for (i <- LazyList.from(-1, -1)) {
         if (y + i < 0) break
@@ -96,7 +96,7 @@ class Seat(initial: Char, x: Int, y: Int)(implicit val ec: ExecutionContext.para
     }
   }
 
-  private def west(layout: Array[Array[Seat]]): Unit = {
+  private def east(layout: Array[Array[Seat]]): Unit = {
     breakable {
       for (i <- LazyList.from(1)) {
         if (i >= layout.head.length) break
@@ -108,7 +108,7 @@ class Seat(initial: Char, x: Int, y: Int)(implicit val ec: ExecutionContext.para
     }
   }
 
-  private def south_west(layout: Array[Array[Seat]]): Unit = {
+  private def south_east(layout: Array[Array[Seat]]): Unit = {
     breakable {
       for (i <- LazyList.from(1)) {
         if (i >= layout.head.length) break
@@ -132,7 +132,7 @@ class Seat(initial: Char, x: Int, y: Int)(implicit val ec: ExecutionContext.para
     }
   }
 
-  private def south_east(layout: Array[Array[Seat]]): Unit = {
+  private def south_west(layout: Array[Array[Seat]]): Unit = {
     breakable {
       for (i <- LazyList.from(-1, -1)) {
         if (x + i < 0) break
@@ -144,7 +144,7 @@ class Seat(initial: Char, x: Int, y: Int)(implicit val ec: ExecutionContext.para
     }
   }
 
-  private def east(layout: Array[Array[Seat]]): Unit = {
+  private def west(layout: Array[Array[Seat]]): Unit = {
     breakable {
       for (i <- LazyList.from(-1, -1)) {
         if (x + i < 0) break
@@ -156,7 +156,7 @@ class Seat(initial: Char, x: Int, y: Int)(implicit val ec: ExecutionContext.para
     }
   }
 
-  private def north_east(layout: Array[Array[Seat]]): Unit = {
+  private def north_west(layout: Array[Array[Seat]]): Unit = {
     breakable {
       for (i <- LazyList.from(-1, -1)) {
         if (x + i < 0) break
